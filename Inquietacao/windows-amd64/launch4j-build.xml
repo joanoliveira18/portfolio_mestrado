@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <target name="windows">
+    <taskdef classname="net.sf.launch4j.ant.Launch4jTask" classpath="C:\Users\joana\OneDrive\Ambiente de Trabalho\IPRP\processing-4.1.1\modes\java\application\launch4j/launch4j.jar:C:\Users\joana\OneDrive\Ambiente de Trabalho\IPRP\processing-4.1.1\modes\java\application\launch4j/lib/xstream.jar" name="launch4j"/>
+    <launch4j configFile="C:\Users\joana\OneDrive\Ambiente de Trabalho\TMD\Exercício 1\tmd1\windows-amd64\launch4j-config.xml"/>
+  </target>
+</project>
