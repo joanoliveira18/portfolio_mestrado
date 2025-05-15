@@ -1,0 +1,1 @@
+Para melhor visualização do site é aconselhado este ser aberto no browser Google Chrome

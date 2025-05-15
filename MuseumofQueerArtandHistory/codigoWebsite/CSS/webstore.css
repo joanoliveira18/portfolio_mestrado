@@ -1,0 +1,170 @@
+/*Todos dispositivos*/
+body {
+   background-color: darkblue;
+}
+video{
+  height:150%;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index: -2;
+}
+header{
+  position:absolute;
+}
+.image-button {
+  position: absolute;
+}
+.video-background{
+  width:110%;
+  height:110%;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.5);
+}
+h1{
+  position:relative;
+  text-align:center;
+  color:white;
+}
+section {
+  padding: 20px;
+  display: flex;
+  width:90%;
+  position: relative;
+  flex-wrap:wrap;
+justify-content: space-around;
+}
+.product {
+  text-align: center;
+  margin-bottom: 40px;
+  display: inline;
+  border: 3px solid white;
+}
+.product img{
+  width:80%;
+  height:80%;
+  position:relative;
+   object-fit: cover;
+}
+.textabt{
+  width:100%;
+  position:relative;
+  top:-170px;
+  transition-duration: 300ms;
+}
+.textabt h3{
+position:relative;
+top: 20px;
+}
+button{
+  position:relative;
+}
+.textabt p{
+position:relative;
+top: 10px;
+}
+
+
+/* PC */
+@media (min-width: 800px){
+h1{
+  top:115px;
+}
+section{
+  left:5%;
+  top:125px;
+}
+.product {
+  width:25%;
+  min-width:250px;
+  max-height:300px;
+  min-height:200px;
+}
+
+.product img{
+  top: 25px;
+}
+.textabt{
+  height: 100px;
+  background-color: rgba(0,0,0,0);
+  color: rgba(0,0,0,0);
+}
+button{
+  top:-60px;
+}
+.textabt:hover{
+  background-color: rgba(0,0,0,0.7);
+  color:white;
+}
+}
+
+
+/*Tablet*/
+@media(min-width: 768px) and (max-width: 1040px){
+  .product {
+    width:40%;
+    height:330px;
+    max-width: 400px;
+    min-width:300px;
+    
+  }
+  .product img{
+    top: 15px;
+    height:80%;
+  }
+}
+
+
+/* Mobile */
+@media ( max-width: 800px){
+body {
+  margin: 0;
+  padding: 0;
+}
+h1{
+  top:60px; 
+}
+section {
+  top:50px;
+}
+.product img{
+  top: 15px;
+  height:80%;
+}
+.textabt{
+  height: 75px;
+  background-color: rgba(0,0,0,0.7);
+  color: white;
+  top:-100px;
+  font-size:12px;
+}
+.textabt h3{
+  font-size:15px;
+}
+button{
+  top:-50px;
+}
+  video{
+    left:-400px;
+  }
+}
+@media ( min-width: 450px) and (max-width: 800px){
+  .product {
+    width:40%;
+    max-height:200px;
+      min-height:150px;
+    max-width: 200px;
+    min-width:150px;
+  }
+}
+@media ( max-width: 450px){
+  .product {
+    width:40%;
+    height:110px;
+    max-width: 150px;
+    min-width:75px;
+  }
+}

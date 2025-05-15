@@ -1,0 +1,285 @@
+/*Todos os dispositivos*/
+body {
+  background-color: #fed611;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+li p {
+  color: white;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+header nav li {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  width: 45%;
+}
+main {
+  top: 120px;
+  position: relative;
+}
+#link {
+  position: relative;
+  text-align: right;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#main {
+  position: relative;
+  width: auto;
+  height: 450px;
+  left: 22%;
+}
+#text {
+  position: relative;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+}
+#title {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  position: relative;
+}
+#intro {
+  position: relative;
+  float: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#intro1 {
+  position: relative;
+  float: right;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+video {
+  position: relative;
+  height: auto;
+}
+h4 {
+  position: absolute;
+  color: black;
+}
+#setaEsquerda {
+  left: 10px;
+}
+#setaDireita {
+  right: 10px;
+}
+#imagemPr {
+  position: relative;
+  height: auto;
+}
+footer {
+  position: fixed;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  bottom: 0;
+  width: 100%;
+}
+footer small {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  display: inline-block;
+  width: 80%;
+  position: relative;
+  top: 0px;
+}
+
+/*PC*/
+@media (min-width: 1040px) {
+  header {
+    height: 100px;
+  }
+  li p:hover {
+    animation: 3s linear 0s infinite alternate animating-multiple-properties;
+    cursor: auto;
+  }
+  @keyframes animating-multiple-properties {
+    from {
+      color: #f03462;
+    }
+    to {
+      color: white;
+    }
+  }
+  li p {
+    font-size: 22px;
+  }
+  #link {
+    right: 10px;
+    font-size: 12px;
+  }
+  #title {
+    bottom: 150px;
+    font-size: 25px;
+    margin: 10px;
+  }
+  #intro {
+    width: 45%;
+    height: 18rem;
+    font-size: 18px;
+    bottom: 160px;
+    left: 20px;
+    text-align: left;
+  }
+  #intro1 {
+    width: 45%;
+    height: 18rem;
+    font-size: 18px;
+    bottom: 160px;
+    right: 100px;
+    text-align: left;
+  }
+  video {
+    margin-top: 10px;
+    width: 50%;
+    left: 350px;
+  }
+  #imagemPr {
+    width: 50%;
+    left: 350px;
+  }
+  #text {
+    width: 50%;
+    bottom: 100px;
+    font-size: 24px;
+    left: 350px;
+    height: 20rem;
+  }
+  #setaEsquerda {
+    top: 1000px;
+  }
+  #setaDireita {
+    top: 1000px;
+  }
+  h4 {
+    font-size: 50px;
+    cursor: pointer;
+  }
+}
+
+/*Tablet*/
+@media(min-width: 768px) and (max-width: 1040px) {
+  header {
+    height: 110px;
+  }
+  li p {
+    font-size: 22px;
+  }
+  #link {
+    right: 2px;
+    font-size: 8px;
+  }
+  video {
+    width: 90%;
+    left: 5%;
+    margin-top: 10px;
+  }
+  #resumo {
+    position: relative;
+    height: 40rem;
+  }
+  #intro {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  #intro1 {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  #imagemPr {
+    width: 80%;
+    left: 100px;
+  }
+  #setaEsquerda {
+    top: 1000px;
+  }
+  #setaDireita {
+    top: 1000px;
+  }
+  h4 {
+    font-size: 40px;
+  }
+  #text {
+    margin: 5px;
+    bottom: 40px;
+    font-size: 30px;
+  }
+  #title {
+    font-size: 25px;
+    margin: 10px;
+  }
+  #intro {
+    margin: 5px;
+    padding: 10px;
+    font-size: 20px;
+  }
+  #intro1 {
+    margin: 5px;
+    padding: 10px;
+    font-size: 20px;
+  }
+}
+
+/*Mobile*/
+@media (max-width: 800px) {
+  header {
+    height: 110px;
+  }
+  li p {
+    font-size: 22px;
+  }
+  #link {
+    right: 2px;
+    font-size: 8px;
+  }
+  #title {
+    font-size: 16px;
+    margin: 10px;
+  }
+  #resumo {
+    position: relative;
+    height: 50rem;
+  }
+  #intro {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  #intro1 {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  video {
+    width: 90%;
+    left: 5%;
+    margin-top: 10px;
+  }
+  #imagemPr {
+    width: 80%;
+    left: 40px;
+  }
+  #text {
+    margin: 5px;
+    bottom: 40px;
+    font-size: 12px;
+  }
+  #setaEsquerda {
+    top: 320px;
+  }
+  #setaDireita {
+    top: 320px;
+  } 
+  h4 {
+    font-size: 25px;
+  }
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <title>About</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="CSS/about.css" >
+  <link rel="stylesheet" type="text/css" href="CSS/all.css">
+</head>
+<body>
+    <header>
+      <nav class="navegation">
+        <ul>
+          <li class="navegation"><a href="index.html">Home</a></li>
+          <li class="navegation"><a href="about.html">About</a></li>
+          <li class="navegation"><a href="webstore.html">Webstore</a></li>
+          <li class="navegation"><a href="tickets.php">Tickets</a></li>
+        </ul>
+      </nav>
+    </header>
+  <img id="myButton" class="image-button" src="Imagens/buttonpc.png" 
+   srcset="Imagens/buttonmobile.png 55w,
+           Imagens/buttontablet.png 75w,
+           Imagens/buttonpc.png 100w" 
+   sizes="(max-width: 768px) 55px,
+          (max-width: 1024px) 75px,
+          100px" 
+   alt="Menu">
+  <div>
+    <img id="background" src="Imagens/aboutscreenbig.jpg" 
+     srcset="Imagens/aboutscreensmall.jpg 480w,
+             Imagens/aboutscreenmedium.jpg 768w,
+             Imagens/aboutscreenbig.jpg 1024w" 
+     sizes="(max-width: 768px) 300px,
+            (max-width: 1024px) 600px,
+            1920px" 
+     alt="About_Screen">
+   <h1>Museum of Queer Art and History</h1>
+    </div>
+    <main>
+      <div class="who">
+      <h2>Who are we?</h2> 
+      <p>Here is the section where the information about the museum and how and why it came to be</p>
+        <p>
+          <br>
+        </p>
+      </div>
+      <div class="horariosacessibilidade">
+        <h2>Schedules</h2>
+        <p>Here is the section where the schedules of the museum would be displayed</p>
+        <h2>Accessibility</h2>
+        <p>Here is the section where the accessibility information would be displayed</p>
+      </div>
+      <div>
+        <h2>Coment/FeedBack Section</h2>
+        <p>Leave your feedback here! Tell us what we can do better!</p>
+        <form>
+        <label for="email">Email:</label>
+          <br>
+        <input type="email" id="email" required /><br>
+        <label for="text">Coment:</label>
+          <br>
+        <input type="text" id="text" name="text" required minlength="4" maxlength="500" size="100" />
+          <br>
+        <input type="submit" value="Send" />
+          </form>
+      </div>
+      <div class="comments-container">
+        <ul id="comments-list"></ul>
+      </div>
+    </main>
+  <footer>
+    <address>
+      <ul>
+      <li><a href="mailto:museumofqueerartandhistory@gmail.com">museumofqueerartandhistory@gmail.com</a></li>
+      <li><a href="tel:+351231453765">+351 231 453 765</a></li>
+        </ul>
+    </address>
+    <small>
+      Copyright © 2023 Museum of Queer Art and History. All Rights Reserved.
+    </small>
+  </footer>
+  <script src="js/script.js"></script>
+  <script src="js/api.js"></script>
+</body>
+</html>

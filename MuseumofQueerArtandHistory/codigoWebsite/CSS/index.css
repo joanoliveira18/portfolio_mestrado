@@ -1,0 +1,121 @@
+/*Todos os Dispositivos*/
+body {
+ font-family: Arial, sans-serif;
+ background-color: darkblue;
+ background-image: url("../Imagens/background.jpg");
+}
+h1{
+  position: absolute;
+  color:white;
+}
+h3{
+  color:white;
+}
+.exposicao{
+  position: relative;
+  text-align: center;
+  display: inline;
+  border: 2px solid white;
+  padding-top:20px;
+  margin-bottom: 40px;
+  padding-left:20px;
+  padding-right:20px;
+}
+.exposicao img{
+  position: relative;
+}
+.image-button {
+  position: fixed;
+}
+
+
+/*PC*/
+@media (min-width: 1040px){
+header{
+  position:fixed;
+}
+  h1{
+    display: inline;
+    width: 40%;
+    left: 50px;
+    top: 200px;
+    font-size: 75px;
+  }
+main{
+  display: flex;
+  height: 400px;
+  position: relative;
+  left:45%;
+  top:200px;
+  width:2000px;
+  flex-wrap:wrap;
+  justify-content: space-around;
+}
+  section {
+    padding: 20px;
+    display: flex;
+    height: 100%;
+    width:90%;
+    position: relative;
+    flex-wrap:wrap;
+    justify-content: space-around;
+  }
+}
+
+
+/*Tablet*/
+@media(min-width: 768px) and (max-width: 1040px){
+  h1{
+    text-align:center;
+    top:50px;
+    left:10%;
+    font-size:40px;
+    width:80%;
+  }
+  main{
+  display: flex;
+    width: 80%;
+    position: relative;
+    left:10%;
+    top:230px;
+    flex-wrap:wrap;
+    justify-content: space-around;
+  }
+  section {
+    padding: 20px;
+    display: flex;
+    width:100%;
+    position: relative;
+    flex-wrap:wrap;
+    justify-content: space-around;
+  }
+}
+
+
+/*Mobile*/  
+@media (max-width: 768px){
+  h1{
+    text-align:center;
+    top:50px;
+    left:10%;
+    font-size:40px;
+    width:80%;
+  }
+  main{
+  display: flex;
+    width: 80%;
+    position: relative;
+    left:10%;
+    top:230px;
+    flex-wrap:wrap;
+    justify-content: space-around;
+  }
+  section {
+    padding: 20px;
+    display: flex;
+    width:100%;
+    position: relative;
+    flex-wrap:wrap;
+    justify-content: space-around;
+  }
+}
