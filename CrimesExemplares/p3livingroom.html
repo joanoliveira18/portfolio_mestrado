@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Crimes Exemplares: Uma Exploração Interativa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&display=swap"
+      rel="stylesheet" />
+    <style>
+      /* 1 estilos base e reset */
+      body,
+      html,
+      button,
+      .start-btn,
+      .back-button,
+      .end-popup,
+      .home-content,
+      .popup-content,
+      * {
+        font-family: "Alegreya", serif;
+      }
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: black;
+        overflow: hidden;
+      }
+
+      /* 2 layout principal */
+      .game-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        background-color: #111111;
+      }
+      .room-container {
+        position: relative;
+        width: auto;
+        height: auto;
+        border: 1.5px solid #333;
+        border-radius: 20px;
+        overflow: hidden;
+        background-color: white;
+        flex-shrink: 0;
+        margin: 20px;
+      }
+      .room-bg {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* 3 pagina inicial */
+      .home {
+        width: 100%;
+        height: 100vh;
+        display: block;
+        background-color: #9e151a;
+        object-fit: cover;
+      }
+      .home-content {
+        position: absolute;
+        font-size: 18px;
+        line-height: 1.6;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background-color: rgba(158, 21, 26, 0.9);
+      }
+      .home-popup {
+        background-color: #9e151a;
+      }
+
+      /* 4 itens clicaveis */
+      .item {
+        position: fixed;
+        cursor: pointer;
+        transition: transform 0.4s;
+        transform: scale(0.85);
+      }
+      .item:hover {
+        transform: scale(1);
+      }
+
+      /* 5 popup base */
+      .popup {
+        display: flex;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: white;
+        align-items: center;
+        justify-content: center;
+      }
+      .popup-content {
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 6 botoes */
+      .start-btn {
+        background-color: #000000;
+        color: white;
+        border: none;
+        padding: 10px 50px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .start-btn:hover {
+        background-color: #200000;
+      }
+      .start-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.075);
+        transition: width 3s linear;
+      }
+      .start-btn.loading::before {
+        width: 100%;
+      }
+      .start-btn.ready {
+        background-color: #000000;
+        color: white;
+        pointer-events: auto;
+        opacity: 1;
+      }
+      .start-btn:not(.ready) {
+        pointer-events: none;
+        opacity: 0.9;
+        background-color: #333;
+      }
+      .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: transparent;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        z-index: 999;
+        display: block;
+        text-align: left;
+        padding: 0;
+        font-size: calc(14px * (100vw / 1920));
+      }
+      .back-button::before {
+        content: "voltar ao ecrã inicial";
+        display: block;
+        font-size: calc(14px * (100vw / 1920));
+        margin-bottom: calc(5px * (100vw / 1920));
+        white-space: nowrap;
+      }
+      .back-button:hover {
+        color: #9e151a;
+        background-color: transparent;
+      }
+      .mute-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background-color: transparent;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        z-index: 999;
+        padding: 0;
+        font-size: calc(24px * (100vw / 1920));
+      }
+      .mute-button:hover {
+        color: #9e151a;
+      }
+      .mute-button.muted {
+        color: #999;
+      }
+      .popup-content .close-popup,
+      .audio-control {
+        position: absolute;
+        top: 4px;
+        background-color: transparent;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+        font-size: 28px;
+      }
+      .popup-content .close-popup {
+        right: 20px;
+      }
+      .audio-control {
+        position: absolute;
+        bottom: -468px;
+        left: 12%;
+        transform: translateX(-50%);
+        background-color: transparent;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+        font-size: 28px;
+      }
+      .audio-control:hover {
+        color: #9e151a;
+      }
+
+      /* 7 popup do crime cf */
+      .cf-popup {
+        background-color: rgba(0, 0, 0, 0.7);
+        animation: fadeIn 0.5s ease-out;
+      }
+      .cf-popup.fade-out {
+        animation: fadeOut 0.4s ease-out forwards;
+      }
+      .cf-popup .popup-content {
+        background-color: white;
+        border-radius: 20px;
+        border: 1.5px solid #333;
+        padding: 5px;
+        overflow: hidden;
+        width: 1000px;
+        height: 700px;
+        margin: auto;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        scale: 1.2;
+        animation: slideUp 0.4s ease-out;
+      }
+      .cf-popup .popup-content.slide-out {
+        animation: slideDown 0.4s ease-out forwards;
+      }
+      .cf-popup img {
+        display: block;
+        height: auto;
+        width: auto;
+        max-width: 1200px;
+        max-height: 900px;
+        object-fit: contain;
+        margin: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .cf-popup img.fade-in {
+        opacity: 1;
+      }
+      .close-popup {
+        position: fixed;
+        color: #333;
+        font-size: calc(40px * (100vw / 1920));
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 1001;
+      }
+      .close-popup:hover {
+        transform: scale(1);
+      }
+
+      /* 8 popup final */
+      .end-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.966);
+        color: rgb(0, 0, 0);
+        padding: 30px 60px;
+        border-radius: 10px;
+        font-size: 24px;
+        z-index: 2000;
+        animation: fadeInSlideUp 0.5s ease-out,
+          fadeOutSlideDown 0.5s ease-out 4s forwards;
+      }
+      .end-popup-content {
+        text-align: center;
+      }
+
+      /* 9 animacoes */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideDown {
+        from {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(20%);
+          opacity: 0;
+        }
+      }
+      @keyframes fadeInSlideUp {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+      }
+      @keyframes fadeOutSlideDown {
+        from {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, 20px);
+        }
+      }
+
+      /* 10 media queries */
+      @media screen and (max-width: 1920px) {
+        .room-container {
+          width: 98vw;
+          height: calc(100vw * 0.46875);
+          transform: scale(1);
+        }
+        .cf-popup .close-popup {
+          top: calc(220px * (98vw / 1920));
+          right: calc(220px * (98vw / 1920));
+        }
+      }
+      @media screen and (max-width: 1200px) {
+        .cf-popup .popup-content {
+          width: 90vw;
+          height: calc(90vw * 0.636);
+        }
+        .cf-popup img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+
+      /* gif lareira */
+      .fireplace-flame {
+        position: absolute;
+        width: 120px;
+        height: 170px;
+        top: 610px;
+        left: 1380px;
+        z-index: 10;
+        display: none;
+        pointer-events: none;
+        opacity: 15%;
+        mix-blend-mode: soft-light;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="landingPopup" class="popup home-popup">
+      <div class="popup-content">
+        <img src="cc/home.png" alt="home" class="home" />
+        <div class="home-content">
+          <button class="start-btn" id="startBtn" disabled>Explorar</button>
+          <br />
+          <br />
+          <p>
+            Observe atentamente os detalhes • Clique em cada objeto para revelar
+            informações adicionais • Tente reconstruir a narrativa completa •
+            Clique fora do ficheiro criminal para voltar à sala <br />
+            <br />
+            Baseado no livro de Max Aub, "Crime Exemplares" • Trabalho de
+            Carolina Silva, Joana Oliveira e João Matos • 2024
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-wrapper">
+      <div class="room-container">
+        <button class="back-button" id="backButton">←</button>
+        <button class="mute-button" id="muteButton">🔊</button>
+        <img src="sc/cenario.png" alt="cenario" class="room-bg" />
+      </div>
+    </div>
+
+    <div id="imagePopup" class="popup cf-popup" style="display: none">
+      <div class="popup-content">
+        <span class="close-popup">&times;</span>
+        <img id="popupImage" src="" alt="Popup Image" />
+      </div>
+    </div>
+
+    <div id="endPopup" class="end-popup" style="display: none">
+      <div class="end-popup-content">
+        Parabéns, encontrou todos os crimes exemplares!
+      </div>
+    </div>
+
+    <script>
+      // quando o documento estiver carregado, executa todo o codigo
+      document.addEventListener("DOMContentLoaded", () => {
+        // seleciona e guarda todos os elementos principais que vamos usar
+        const roomContainer = document.querySelector(".room-container");
+        const originalWidth = 1920; // largura base do design
+        const originalHeight = 900; // altura base do design
+        const landingPopup = document.getElementById("landingPopup");
+        const startBtn = document.getElementById("startBtn");
+        const imagePopup = document.getElementById("imagePopup");
+        const popupImage = document.getElementById("popupImage");
+        const closePopup = document.querySelector(".close-popup");
+        const backButton = document.getElementById("backButton");
+
+        // configura o estado inicial do botao de comecar
+        startBtn.disabled = true; // comeca desativado
+        startBtn.classList.remove("ready");
+
+        // comeca a animacao de loading do botao
+        setTimeout(() => {
+          startBtn.classList.add("loading");
+        }, 100);
+
+        // ativa o botao depois de 3 segundos
+        setTimeout(() => {
+          startBtn.classList.add("ready");
+          startBtn.disabled = false;
+        }, 3000);
+
+        // quando clica no botao de comecar
+        startBtn.addEventListener("click", () => {
+          landingPopup.style.display = "none"; // esconde o popup inicial
+          backButton.style.display = "block"; // mostra o botao de voltar
+
+          // tenta comecar os sons ambiente
+          Promise.all([
+            fireplaceSound
+              .play()
+              .catch((e) => console.error("Fireplace sound failed:", e)),
+            rainSound
+              .play()
+              .catch((e) => console.error("Rain sound failed:", e)),
+          ]).catch((e) => console.error("Audio playback failed:", e));
+        });
+
+        // quando clica no botao de voltar
+        backButton.addEventListener("click", () => {
+          landingPopup.style.display = "flex"; // mostra o popup inicial
+          backButton.style.display = "none"; // esconde o botao de voltar
+
+          // reset de todos os items para o estado inicial
+          const items = roomContainer.querySelectorAll(".item");
+          items.forEach((item) => {
+            item.src = item.getAttribute("data-sc");
+            item.setAttribute("data-state", "sc");
+          });
+
+          // volta para o cenario inicial
+          const roomBg = document.querySelector(".room-bg");
+          roomBg.src = "sc/cenario.png";
+
+          // para todos os sons
+          backgroundMusic.pause();
+          backgroundMusic.currentTime = 0;
+          fireplaceSound.pause();
+          rainSound.pause();
+          musicStarted = false;
+
+          switchedItems = 0; // reset do contador de items descobertos
+        });
+
+        // fecha o popup inicial se clicar fora
+        landingPopup.addEventListener("click", (e) => {
+          if (e.target === landingPopup) {
+            landingPopup.style.display = "none";
+            backButton.style.display = "block";
+          }
+        });
+
+        // configuracao de todos os items clicaveis
+        const itemConfigs = [
+          // cada item tem: imagem normal, imagem revelada, posicao top, posicao left
+          { src: "sc/1.png", ccSrc: "cc/1.png", top: 660, left: 238 },
+          { src: "sc/2.png", ccSrc: "cc/2.png", top: 800, left: 1270 },
+          { src: "sc/3.png", ccSrc: "cc/3.png", top: 478, left: 1146 },
+          { src: "sc/4.png", ccSrc: "cc/4.png", top: 179, left: 1098 },
+          { src: "sc/5.png", ccSrc: "cc/5.png", top: 234, left: 97 },
+          { src: "sc/6.png", ccSrc: "cc/6.png", top: 159, left: 921 },
+          { src: "sc/7.png", ccSrc: "cc/7.png", top: 704, left: 995 },
+          { src: "sc/8.png", ccSrc: "cc/8.png", top: 165, left: 468 },
+          { src: "sc/9.png", ccSrc: "cc/9.png", top: 0, left: 1433 },
+          { src: "sc/10.png", ccSrc: "cc/10.png", top: 9, left: 670 },
+          { src: "sc/11.png", ccSrc: "cc/11.png", top: 805, left: 1088 },
+          { src: "sc/12.png", ccSrc: "cc/12.png", top: 727, left: 1171 },
+          { src: "sc/13.png", ccSrc: "cc/13.png", top: 122, left: 1566 },
+          { src: "sc/14.png", ccSrc: "cc/14.png", top: 715, left: 1311 },
+          { src: "sc/15.png", ccSrc: "cc/15.png", top: 565, left: 498 },
+          { src: "sc/16.png", ccSrc: "cc/16.png", top: 415, left: 1468 },
+          { src: "sc/17.png", ccSrc: "cc/17.png", top: 244, left: 1235 },
+          { src: "sc/18.png", ccSrc: "cc/18.png", top: 400, left: 1598 },
+          { src: "sc/19.png", ccSrc: "cc/19.png", top: 761, left: 282 },
+          { src: "sc/20.png", ccSrc: "cc/20.png", top: 594, left: 373 },
+          { src: "sc/21.png", ccSrc: "cc/21.png", top: 553, left: 1543 },
+          { src: "sc/22.png", ccSrc: "cc/22.png", top: 578, left: 728 },
+          { src: "sc/23.png", ccSrc: "cc/23.png", top: 289, left: 653 },
+        ];
+
+        // cria array com os caminhos das imagens dos popups
+        const popupImgs = itemConfigs.map((_, i) => `cf/cf${i + 1}.png`);
+
+        // funcao principal que posiciona todos os items na sala
+        function positionItems() {
+          // calcula o tamanho atual do contentor
+          const containerWidth = roomContainer.offsetWidth;
+          const containerHeight = roomContainer.offsetHeight;
+          const scaleX = containerWidth / originalWidth;
+          const scaleY = containerHeight / originalHeight;
+
+          let switchedItems = 0;
+          const totalItems = itemConfigs.length;
+          const roomBg = document.querySelector(".room-bg");
+
+          // limpa items existentes antes de recriar
+          roomContainer.querySelectorAll(".item").forEach((el) => el.remove());
+
+          // funcao que carrega uma imagem e retorna uma promise
+          const loadImage = (src) => {
+            return new Promise((resolve, reject) => {
+              const img = new Image();
+              img.onload = () => resolve(img);
+              img.onerror = reject;
+              img.src = src;
+            });
+          };
+
+          // carrega todas as imagens e depois cria os items
+          Promise.all(itemConfigs.map((config) => loadImage(config.src)))
+            .then(() => {
+              itemConfigs.forEach((config, index) => {
+                const item = document.createElement("img");
+                item.src = config.src;
+                item.classList.add("item");
+
+                // calcula posicao e tamanho com escala
+                const scaledTop = config.top * scaleY;
+                const scaledLeft = config.left * scaleX;
+                const scaledWidth = item.naturalWidth * scaleX;
+                const scaledHeight = item.naturalHeight * scaleY;
+
+                // aplica posicao e tamanho
+                item.style.top = `${scaledTop}px`;
+                item.style.left = `${scaledLeft}px`;
+                item.style.width = `${scaledWidth}px`;
+                item.style.height = `${scaledHeight}px`;
+
+                // guarda informacoes do item nos atributos
+                item.setAttribute("data-sc", config.src);
+                item.setAttribute("data-cc", config.ccSrc);
+                item.setAttribute("data-popup", popupImgs[index]);
+                item.setAttribute("data-state", "sc");
+
+                // adiciona evento de clique no item
+                item.addEventListener("click", function (e) {
+                  const currentState = this.getAttribute("data-state");
+                  const itemNumber =
+                    this.getAttribute("data-popup").match(/\d+/)[0];
+
+                  // se o item ainda nao foi revelado
+                  if (currentState === "sc") {
+                    this.src = this.getAttribute("data-cc");
+                    this.setAttribute("data-state", "cc");
+                    switchedItems++;
+
+                    // se todos os items foram revelados
+                    if (switchedItems === totalItems) {
+                      roomBg.src = "cc/cenario.png";
+
+                      // adiciona o fogo
+                      const flame = document.createElement("img");
+                      flame.src = "cc/fogo.gif";
+                      flame.className = "fireplace-flame";
+                      roomContainer.appendChild(flame);
+
+                      // mostra o fogo com fade
+                      setTimeout(() => {
+                        flame.style.display = "block";
+                        flame.style.opacity = "0";
+                        requestAnimationFrame(() => {
+                          flame.style.transition = "opacity 1s ease-in";
+                          flame.style.opacity = "1";
+                        });
+                      }, 500); // espera meio segundo após mudar o cenário
+
+                      const endPopup = document.getElementById("endPopup");
+                      endPopup.style.display = "block";
+                      setTimeout(() => {
+                        endPopup.style.display = "none";
+                      }, 3500);
+                    }
+                  }
+
+                  e.stopPropagation();
+
+                  // toca som de abrir pasta
+                  if (!isMuted) {
+                    popupSound.currentTime = 0;
+                    popupSound.play();
+                  }
+
+                  // mostra popup com fade
+                  imagePopup.style.display = "flex";
+                  popupImage.classList.remove("fade-in");
+                  const newSrc = this.getAttribute("data-popup");
+                  popupImage.src = newSrc;
+
+                  // para audio anterior se existir
+                  if (audio) {
+                    audio.pause();
+                    audio = null;
+                  }
+
+                  // prepara novo audio
+                  audio = new Audio(`som/${itemNumber}.m4a`);
+
+                  // cria botao de controlo de audio
+                  const audioControl = document.createElement("button");
+                  audioControl.className = "audio-control";
+                  audioControl.textContent = "►";
+
+                  // adiciona eventos ao botao de audio
+                  audioControl.addEventListener("click", () => {
+                    if (audio.paused) {
+                      if (!isMuted) {
+                        audio.play();
+                        audioControl.textContent = "❚❚";
+                      }
+                    } else {
+                      audio.pause();
+                      audioControl.textContent = "►";
+                    }
+                  });
+
+                  // remove botao anterior se existir
+                  const existingControl =
+                    document.querySelector(".audio-control");
+                  if (existingControl) {
+                    existingControl.remove();
+                  }
+
+                  // adiciona novo botao ao popup
+                  const popupContent = document.querySelector(
+                    ".cf-popup .popup-content"
+                  );
+                  popupContent.appendChild(audioControl);
+
+                  // reset do botao quando audio acaba
+                  audio.addEventListener("ended", () => {
+                    audioControl.textContent = "►";
+                  });
+
+                  // fade da imagem quando carrega
+                  popupImage.onload = () => {
+                    popupImage.classList.add("fade-in");
+                  };
+
+                  // comeca musica de jazz se for o item 17
+                  if (itemNumber === "17" && !isMuted) {
+                    backgroundMusic.play();
+                    musicStarted = true;
+                  }
+                });
+
+                roomContainer.appendChild(item);
+              });
+
+              const flame = document.querySelector(".fireplace-flame");
+              if (flame) {
+                const scaleX = containerWidth / originalWidth;
+                const scaleY = containerHeight / originalHeight;
+
+                // ajusta posição e tamanho do fogo com novos valores
+                flame.style.width = `${120 * scaleX}px`; // base maior
+                flame.style.height = `${170 * scaleY}px`; // base maior
+                flame.style.top = `${450 * scaleY}px`; // mais baixo
+                flame.style.left = `${1500 * scaleX}px`; // mais à direita
+              }
+            })
+            .catch((error) =>
+              console.error("Erro ao carregar imagens:", error)
+            );
+        }
+
+        // chama positionItems ao iniciar e quando redimensiona
+        positionItems();
+        window.addEventListener("resize", positionItems);
+
+        // funcao que fecha popup com animacao
+        function closePopupWithAnimation() {
+          const popup = document.querySelector(".cf-popup");
+          const popupContent = popup.querySelector(".popup-content");
+
+          popup.classList.add("fade-out");
+          popupContent.classList.add("slide-out");
+
+          // para audio e remove controles
+          if (audio) {
+            audio.pause();
+            audio = null;
+          }
+          const audioControl = document.querySelector(".audio-control");
+          if (audioControl) {
+            audioControl.remove();
+          }
+
+          // esconde popup depois da animacao
+          setTimeout(() => {
+            imagePopup.style.display = "none";
+            popup.classList.remove("fade-out");
+            popupContent.classList.remove("slide-out");
+          }, 400);
+        }
+
+        // fecha popup ao clicar no X ou fora
+        closePopup.addEventListener("click", (e) => {
+          e.stopPropagation();
+          closePopupWithAnimation();
+        });
+
+        imagePopup.addEventListener("click", (e) => {
+          if (e.target === imagePopup) {
+            closePopupWithAnimation();
+          }
+        });
+
+        // configura botao de mutar
+        const muteButton = document.getElementById("muteButton");
+        muteButton.addEventListener("click", () => {
+          isMuted = !isMuted;
+          muteButton.textContent = isMuted ? "🔇" : "🔊";
+          muteButton.classList.toggle("muted");
+
+          // muta/desmuta todos os sons
+          if (audio) {
+            audio.muted = isMuted;
+          }
+          if (backgroundMusic && musicStarted) {
+            backgroundMusic.muted = isMuted;
+          }
+          fireplaceSound.muted = isMuted;
+          rainSound.muted = isMuted;
+
+          // tenta recomecar sons ambiente se desmutou
+          if (!isMuted && landingPopup.style.display === "none") {
+            if (fireplaceSound.paused)
+              fireplaceSound
+                .play()
+                .catch((e) => console.error("Fireplace restart failed:", e));
+            if (rainSound.paused)
+              rainSound
+                .play()
+                .catch((e) => console.error("Rain restart failed:", e));
+          }
+        });
+
+        // variaveis de controlo de audio
+        let audio = null;
+        let isMuted = false;
+
+        // funcao que posiciona os botoes na escala certa
+        function positionButtons() {
+          const containerWidth = roomContainer.offsetWidth;
+          const containerHeight = roomContainer.offsetHeight;
+          const scaleX = containerWidth / originalWidth;
+          const scaleY = containerHeight / originalHeight;
+
+          // posiciona botao de voltar
+          const backButton = document.getElementById("backButton");
+          backButton.style.top = `${38 * scaleY}px`;
+          backButton.style.left = `${30 * scaleX}px`;
+
+          // posiciona botao de mutar
+          const muteButton = document.getElementById("muteButton");
+          muteButton.style.bottom = `${50 * scaleY}px`;
+          muteButton.style.left = `${50 * scaleX}px`;
+        }
+
+        // chama positionButtons ao iniciar e quando redimensiona
+        positionButtons();
+        window.addEventListener("resize", positionButtons);
+
+        // configura todos os sons
+        let popupSound = new Audio("sfx/folder.wav");
+        popupSound.volume = 0.25;
+
+        let backgroundMusic = new Audio("sfx/jazz.mp3");
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.03;
+        let musicStarted = false;
+
+        const fireplaceSound = new Audio("sfx/fireplace.wav");
+        fireplaceSound.loop = true;
+        fireplaceSound.volume = 0.1;
+
+        const rainSound = new Audio("sfx/rain.wav");
+        rainSound.loop = true;
+        rainSound.volume = 0.04;
+
+        // funcao que comeca os sons ambiente
+        function startAmbientSounds() {
+          if (!isMuted && landingPopup.style.display === "none") {
+            Promise.all([
+              fireplaceSound
+                .play()
+                .catch((e) => console.error("Fireplace sound failed:", e)),
+              rainSound
+                .play()
+                .catch((e) => console.error("Rain sound failed:", e)),
+            ]).catch((e) => console.error("Audio playback failed:", e));
+          }
+        }
+
+        // inicia sons ambiente
+        startAmbientSounds();
+      });
+    </script>
+  </body>
+</html>

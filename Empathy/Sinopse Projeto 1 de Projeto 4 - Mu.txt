@@ -1,0 +1,11 @@
+Sinopse Projeto 1 de Projeto 4 - Multimédia Interativo
+
+O problema que este projeto pretende retratar é a empatia como um conceito ambíguo, abordando o potencial autodestrutivo da empatia quando levado ao extremo. Num mundo onde a carga emocional e a absorção excessiva dos problemas alheios podem levar ao esgotamento, este poster interativo questiona até que ponto a empatia pode ser prejudicial quando não há limites saudáveis.
+
+O objetivo do projeto é provocar reflexão sobre o equilíbrio entre ajudar os outros e cuidar de nós mesmos. O intuito é desafiar o espectador a questionar se está a dissolver-se na dor dos outros, esquecendo-se de si mesmo. As frases finais "Have you helped yourself today?" e "Empathy without boundaries is self-destruction" reforçam esta mensagem.
+
+A instalação utiliza câmara e inteligência artificial(ml5.js e P5.js) para captar a presença de um espectador. Inicialmente, o espectador vê uma representação do seu corpo formada por uma colagem de partes de outras pessoas. À medida que permanece em frente ao poster, essas imagens começam a desvanecer-se, revelando gradualmente o seu próprio reflexo em tempo real.
+
+Este projeto materializa-se numa instalação interativa, onde um ecrã (ou projeção) de dimensões de um poster que funciona como espelho dinâmico. O visitante não vê apenas a sua imagem fragmentada, mas torna-se parte ativa da experiência ao interagir com o projeto.
+
+Preveria que os espectadores sentissem um momento de autoavaliação, percebendo como a ausência de limites na empatia pode levar à perda de identidade e desgaste pessoal. Além disso, a obra introduz novas possibilidades da tecnologia na arte, mostrando como a inteligência artificial pode ser usada para criar experiências imersivas e significativas.
